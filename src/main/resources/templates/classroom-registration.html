@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Classroom Copy</title>
-
+<title>Classroom Registration</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 	crossorigin="anonymous">
-
 </head>
 <body>
+
 	<!-- create navigation bar ( header) -->
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -35,24 +33,32 @@
 
 	<br>
 	<br>
-
+	<!-- Create HTML registration form -->
 	<div class="container">
-		<h1>Copy from google classroom</h1>
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
 
-		<div>
-			<a class="btn btn-primary" href="#" th:href="@{/classroom-registration}">new classroom</a>
+				<!-- success message -->
+                <!-- <br>
+				<div th:if="${param.success}">
+					<div class="alert alert-info">Classroom successfully registered!</div>
+				</div> -->
+
+				<h1>Classroom Registration</h1>
+
+				<form th:action="@{/classroom-registration}" method="post" th:object="${classroom}">
+					<div class="form-group">
+						<label class="control-label" for="label"> Name </label>
+						<input id="label" class="form-control" th:field="*{label}"
+							required autofocus="autofocus" />
+					</div>
+
+                    <div class="form-group">
+						<button type="submit" class="btn btn-success">create classroom</button>
+					</div>
+				</form>
+			</div>
 		</div>
-		or
-		<br>
-		<div>
-			<a class="btn btn-primary" href="#" th:href="@{/classroom-registration}">existing classroom</a>
-		</div>
-		<br>
-		<br>
-		<br>
-		Your classrooms 
-
-
 	</div>
 </body>
 </html>

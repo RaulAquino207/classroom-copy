@@ -11,7 +11,7 @@ import br.com.raul.classroomcopy.dto.UserRegistrationDTO;
 import br.com.raul.classroomcopy.service.UserService;
 
 @Controller
-@RequestMapping("/registration")
+@RequestMapping("/user-registration")
 public class UserRegistrationController {
 
     private UserService userService;
@@ -28,13 +28,13 @@ public class UserRegistrationController {
 
     @GetMapping
     public String showRegistrationForm() {
-        return "registration";
+        return "user-registration";
     }
 
     @PostMapping
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDTO registrationDto) {
         userService.register(registrationDto);
-        return "redirect:/registration?success";
+        return "redirect:/user-registration?success";
     }
 
 }

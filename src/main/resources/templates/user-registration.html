@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Registration</title>
+<title>User Registration</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
@@ -41,7 +41,7 @@
 
 				<h1>Registration</h1>
 
-				<form th:action="@{/registration}" method="post" th:object="${user}">
+				<form th:action="@{/user-registration}" method="post" th:object="${user}">
 					<div class="form-group">
 						<label class="control-label" for="name"> Name </label>
 						<input id="name" class="form-control" th:field="*{name}"
