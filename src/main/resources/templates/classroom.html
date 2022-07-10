@@ -35,33 +35,6 @@
 
 	<div class="container">
 		<h1>Copy from google classroom</h1>
-
-		<div>
-			<a class="btn btn-primary" href="#" th:href="@{/classroom-registration}">new classroom</a>
-		</div>
-		or
-		<br>
-		<div>
-			<a class="btn btn-primary" href="#" th:href="@{/classroom-registration}">existing classroom</a>
-		</div>
-		<br>
-		<br>
-		<br>
-		Your classrooms
-		<div style="display: flex;">
-			<div data-th-each="classroom : ${classrooms}" style="border: 1px solid; border-radius: 10px; margin-right: 5px;">
-				<div class="card" style="width: 18rem; display: flex; align-items: center; justify-content: center; padding: 5px;">
-					<div class="card-body" style="align-items: center; justify-content: center;">
-						<h5 class="card-header" data-th-text="${classroom.id}"></h5>
-						<p class="card-text" data-th-text="${classroom.label}"></p>
-						<a href="#" th:href="@{'/classroom-registration/classroom?' + ${classroom.id}}" class="btn btn-primary">go to the classroom</a>
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-
 	</div>
 </body>
 

@@ -1,10 +1,13 @@
 package br.com.raul.classroomcopy.service.impls;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import br.com.raul.classroomcopy.dto.ClassroomDTO;
 import br.com.raul.classroomcopy.dto.ClassroomRegistrationDTO;
 import br.com.raul.classroomcopy.model.Classroom;
 import br.com.raul.classroomcopy.model.User;
@@ -13,6 +16,7 @@ import br.com.raul.classroomcopy.repository.ClassroomRepository;
 import br.com.raul.classroomcopy.repository.UserRepository;
 import br.com.raul.classroomcopy.repository.UserToClassroomRepository;
 import br.com.raul.classroomcopy.service.ClassroomService;
+import br.com.raul.classroomcopy.utils.UserInformationUtils;
 
 @Service
 public class ClassroomServiceImpls implements ClassroomService {
@@ -20,13 +24,15 @@ public class ClassroomServiceImpls implements ClassroomService {
     private ClassroomRepository classroomRepository;
     private UserRepository userRepository;
     private UserToClassroomRepository userToClassroomRepository;
+    private ModelMapper mapper;
 
     public ClassroomServiceImpls(ClassroomRepository classroomRepository, UserRepository userRepository,
-            UserToClassroomRepository userToClassroomRepository) {
+            UserToClassroomRepository userToClassroomRepository, ModelMapper mapper) {
         super();
         this.classroomRepository = classroomRepository;
         this.userRepository = userRepository;
         this.userToClassroomRepository = userToClassroomRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -48,6 +54,32 @@ public class ClassroomServiceImpls implements ClassroomService {
 
         return classroom;
 
+    }
+
+    @Override
+    public List<ClassroomDTO> findAll() {
+        List<Classroom> dbClassrooms = classroomRepository.findAll();
+
+        List<ClassroomDTO> classroomDTOs = new ArrayList<>();
+
+        dbClassrooms.forEach(classroom -> classroomDTOs.add(mapper.map(classroom, ClassroomDTO.class)));
+        return classroomDTOs;
+    }
+
+    @Override
+    public List<ClassroomDTO> findAllByUserId() {
+
+        User user = UserInformationUtils.getAuthenticatedUserInfo(userRepository);
+        System.out.println("User ID: " + user.getId());
+
+        List<UserToClassroom> userToClassrooms = userToClassroomRepository.findByUserId(user.getId());
+
+        List<ClassroomDTO> classroomDTOs = new ArrayList<>();
+        userToClassrooms.forEach(
+                userToClassroom -> classroomDTOs.add(mapper.map(userToClassroom.getClassroom(), ClassroomDTO.class)));
+
+        userToClassrooms.forEach(userToClassroom -> System.out.println("classroom: " + userToClassroom.getClassroom()));
+        return classroomDTOs;
     }
 
 }
