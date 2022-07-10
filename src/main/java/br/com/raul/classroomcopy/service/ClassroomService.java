@@ -14,5 +14,7 @@ public interface ClassroomService {
 
     List<ClassroomDTO> findAllByUserId();
 
-    Classroom findById(Long id);
+    ClassroomDTO findById(Long id);
+
+    String joinClass(Long classroomId);
 }

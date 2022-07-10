@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.raul.classroomcopy.dto.ClassroomDTO;
 import br.com.raul.classroomcopy.dto.ClassroomRegistrationDTO;
+import br.com.raul.classroomcopy.dto.JoinClassDTO;
 import br.com.raul.classroomcopy.service.ClassroomService;
 
 @Controller
@@ -70,10 +71,16 @@ public class ClassroomRegistrationController {
     @GetMapping("/classroom-info/{id}")
     public ModelAndView classroomInfo(
             @PathVariable(required = false, name = "id") String id) {
-        System.out.println("ID : " + id);
+        ClassroomDTO classroomDTO = classroomService.findById(Long.parseLong(id));
         ModelAndView mv = new ModelAndView("classroom-info.html");
-        List<ClassroomDTO> classroomDTOs = classroomService.findAll();
-        mv.addObject("classroom-info", classroomDTOs);
+        mv.addObject("classroom", classroomDTO);
         return mv;
+    }
+
+    @PostMapping("/joinClass")
+    public String joinClass(@ModelAttribute("joinClassDTO") JoinClassDTO JoinClassDTO) {
+        // System.out.println("Classroom ID : " + JoinClassDTO.getId());
+        String status = classroomService.joinClass(JoinClassDTO.getId());
+        return "redirect:/classroom-registration/all-classrooms?" + status;
     }
 }

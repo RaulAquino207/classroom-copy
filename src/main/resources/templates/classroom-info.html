@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Classroom Copy</title>
@@ -34,8 +33,22 @@
 	<br>
 
 	<div class="container">
-		<h1>Copy from google classroom</h1>
+		<br>
+		<br>
+		<div class="header" style="display: flex;
+		justify-content: space-between;">
+			<div>
+				<h1 th:text="${classroom.label}"></h1>
+			</div>
+			<div>
+				<h5> class code :</h5>
+				<h5 th:text="${classroom.id}" ></h5>
+			</div>
+		</div>
+
+		
 	</div>
+
 </body>
 
 </html>

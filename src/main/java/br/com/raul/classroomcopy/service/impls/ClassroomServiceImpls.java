@@ -70,7 +70,6 @@ public class ClassroomServiceImpls implements ClassroomService {
     public List<ClassroomDTO> findAllByUserId() {
 
         User user = UserInformationUtils.getAuthenticatedUserInfo(userRepository);
-        System.out.println("User ID: " + user.getId());
 
         List<UserToClassroom> userToClassrooms = userToClassroomRepository.findByUserId(user.getId());
 
@@ -78,8 +77,36 @@ public class ClassroomServiceImpls implements ClassroomService {
         userToClassrooms.forEach(
                 userToClassroom -> classroomDTOs.add(mapper.map(userToClassroom.getClassroom(), ClassroomDTO.class)));
 
-        userToClassrooms.forEach(userToClassroom -> System.out.println("classroom: " + userToClassroom.getClassroom()));
         return classroomDTOs;
+    }
+
+    @Override
+    public ClassroomDTO findById(Long id) {
+        Optional<Classroom> classroom = classroomRepository.findById(id);
+        ClassroomDTO classroomDTO = new ClassroomDTO();
+        classroomDTO = mapper.map(classroom.get(), ClassroomDTO.class);
+        return classroomDTO;
+    }
+
+    @Override
+    public String joinClass(Long classroomId) {
+
+        User user = UserInformationUtils.getAuthenticatedUserInfo(userRepository);
+        Optional<Classroom> dbClassroom = classroomRepository.findById(classroomId);
+
+        UserToClassroom userToClassroom = new UserToClassroom();
+
+        if (dbClassroom.isPresent()) {
+            userToClassroom.setUser(user);
+            userToClassroom.setRole("STUDENT");
+            userToClassroom.setClassroom(dbClassroom.get());
+            userToClassroomRepository.save(userToClassroom);
+
+            return "success";
+        } else {
+            return "error";
+        }
+
     }
 
 }

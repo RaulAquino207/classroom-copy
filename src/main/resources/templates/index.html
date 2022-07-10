@@ -34,6 +34,16 @@
 	<br>
 
 	<div class="container">
+		<!-- success message -->
+		<br>
+		<div th:if="${param.success}">
+			<div class="alert alert-info">You have successfully joined the class!</div>
+		</div>
+
+		<!-- error message -->
+		<div th:if="${param.error}">
+			<div class="alert alert-danger">Classroom invalid!</div>
+		</div>
 		<h1>Copy from google classroom</h1>
 
 		<div>
@@ -42,21 +52,32 @@
 		or
 		<br>
 		Join an existing classroom
-		<input type="text">
+		<form style="display: flex !important;" th:action="@{/classroom-registration/joinClass}" th:object="${joinClass}" method="post">
+			<!-- <input type="text" id="id" name="id" /> -->
+			<div class="input-group input-group-sm mb-3">
+				<input type="text" id="id" name="id" class="form-control" aria-label="Small"
+					aria-describedby="inputGroup-sizing-sm" style="height: 35px;">
+			</div>
+			<button style="margin-left: 5px;" class="btn btn-success" type="submit">enter</button>
+		</form>
+		<!-- <input type="text">
 		<div>
 			<a class="btn btn-primary" href="#" th:href="@{/classroom-registration}">enter</a>
-		</div>
+		</div> -->
 		<br>
 		<br>
 		<br>
 		Your classrooms
 		<div style="display: flex;">
-			<div data-th-each="classroom : ${classrooms}" style="border: 1px solid; border-radius: 10px; margin-right: 5px;">
-				<div class="card" style="width: 18rem; display: flex; align-items: center; justify-content: center; padding: 5px;">
+			<div data-th-each="classroom : ${classrooms}"
+				style="border: 1px solid; border-radius: 10px; margin-right: 5px;">
+				<div class="card"
+					style="width: 18rem; display: flex; align-items: center; justify-content: center; padding: 5px;">
 					<div class="card-body" style="align-items: center; justify-content: center;">
 						<h5 class="card-header" data-th-text="${classroom.id}"></h5>
 						<p class="card-text" data-th-text="${classroom.label}"></p>
-						<a href="#" th:href="@{'/classroom-registration/classroom-info/' + ${classroom.id}}" class="btn btn-primary">go to the classroom</a>
+						<a href="#" th:href="@{'/classroom-registration/classroom-info/' + ${classroom.id}}"
+							class="btn btn-primary">go to the classroom</a>
 					</div>
 				</div>
 			</div>
