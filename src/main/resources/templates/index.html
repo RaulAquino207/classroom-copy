@@ -41,8 +41,10 @@
 		</div>
 		or
 		<br>
+		Join an existing classroom
+		<input type="text">
 		<div>
-			<a class="btn btn-primary" href="#" th:href="@{/classroom-registration}">existing classroom</a>
+			<a class="btn btn-primary" href="#" th:href="@{/classroom-registration}">enter</a>
 		</div>
 		<br>
 		<br>
@@ -54,7 +56,7 @@
 					<div class="card-body" style="align-items: center; justify-content: center;">
 						<h5 class="card-header" data-th-text="${classroom.id}"></h5>
 						<p class="card-text" data-th-text="${classroom.label}"></p>
-						<a href="#" th:href="@{'/classroom-registration/classroom?' + ${classroom.id}}" class="btn btn-primary">go to the classroom</a>
+						<a href="#" th:href="@{'/classroom-registration/classroom-info/' + ${classroom.id}}" class="btn btn-primary">go to the classroom</a>
 					</div>
 				</div>
 			</div>

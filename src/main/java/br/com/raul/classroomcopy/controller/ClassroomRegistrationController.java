@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.raul.classroomcopy.dto.ClassroomDTO;
@@ -65,11 +67,13 @@ public class ClassroomRegistrationController {
         return mv;
     }
 
-    @GetMapping("/classroom-info")
-    public ModelAndView classroomInfo() {
-        ModelAndView mv = new ModelAndView("index.html");
+    @GetMapping("/classroom-info/{id}")
+    public ModelAndView classroomInfo(
+            @PathVariable(required = false, name = "id") String id) {
+        System.out.println("ID : " + id);
+        ModelAndView mv = new ModelAndView("classroom-info.html");
         List<ClassroomDTO> classroomDTOs = classroomService.findAll();
-        mv.addObject("classrooms", classroomDTOs);
+        mv.addObject("classroom-info", classroomDTOs);
         return mv;
     }
 }

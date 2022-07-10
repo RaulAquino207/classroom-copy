@@ -13,4 +13,6 @@ public interface ClassroomService {
     List<ClassroomDTO> findAll();
 
     List<ClassroomDTO> findAllByUserId();
+
+    Classroom findById(Long id);
 }
