@@ -4,7 +4,9 @@ import java.util.List;
 
 import br.com.raul.classroomcopy.dto.ClassroomDTO;
 import br.com.raul.classroomcopy.dto.ClassroomRegistrationDTO;
+import br.com.raul.classroomcopy.dto.NoticeBoardDTO;
 import br.com.raul.classroomcopy.model.Classroom;
+import br.com.raul.classroomcopy.model.NoticeBoard;
 
 public interface ClassroomService {
 
@@ -17,4 +19,10 @@ public interface ClassroomService {
     ClassroomDTO findById(Long id);
 
     String joinClass(Long classroomId);
+
+    void createNoticeBoard(String content, Long classroomId);
+
+    List<NoticeBoardDTO> findNoticeBoardByClassroomId(Long id);
+
+    void createCommentInNoticeBoard(String comment, Long noticeBoardId, Long classroomId);
 }

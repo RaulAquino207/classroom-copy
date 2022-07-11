@@ -20,7 +20,7 @@
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" th:href="@{/classroom-registration/all-classrooms}">Classroom Copy</a>
+				<a class="navbar-brand" href="#" th:href="@{/classroom-copy/all-classrooms}">Classroom Copy</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul style="float: right;" class="nav navbar-nav">
@@ -37,22 +37,23 @@
 		<!-- success message -->
 		<br>
 		<div th:if="${param.success}">
-			<div class="alert alert-info">You have successfully joined the class!</div>
+			<div class="alert alert-info">you have successfully joined the class!</div>
 		</div>
 
 		<!-- error message -->
 		<div th:if="${param.error}">
-			<div class="alert alert-danger">Classroom invalid!</div>
+			<div class="alert alert-danger">classroom invalid!</div>
 		</div>
-		<h1>Copy from google classroom</h1>
+		<h1>copy from google classroom</h1>
 
 		<div>
-			<a class="btn btn-primary" href="#" th:href="@{/classroom-registration}">new classroom</a>
+			<a class="btn btn-primary" href="#" th:href="@{/classroom-copy}">new classroom</a>
 		</div>
 		or
 		<br>
-		Join an existing classroom
-		<form style="display: flex !important;" th:action="@{/classroom-registration/joinClass}" th:object="${joinClass}" method="post">
+		join an existing classroom
+		<form style="display: flex !important;" th:action="@{/classroom-copy/join-class}"
+			th:object="${joinClass}" method="post">
 			<!-- <input type="text" id="id" name="id" /> -->
 			<div class="input-group input-group-sm mb-3">
 				<input type="text" id="id" name="id" class="form-control" aria-label="Small"
@@ -60,14 +61,10 @@
 			</div>
 			<button style="margin-left: 5px;" class="btn btn-success" type="submit">enter</button>
 		</form>
-		<!-- <input type="text">
-		<div>
-			<a class="btn btn-primary" href="#" th:href="@{/classroom-registration}">enter</a>
-		</div> -->
 		<br>
 		<br>
 		<br>
-		Your classrooms
+		your classrooms
 		<div style="display: flex;">
 			<div data-th-each="classroom : ${classrooms}"
 				style="border: 1px solid; border-radius: 10px; margin-right: 5px;">
@@ -76,14 +73,12 @@
 					<div class="card-body" style="align-items: center; justify-content: center;">
 						<h5 class="card-header" data-th-text="${classroom.id}"></h5>
 						<p class="card-text" data-th-text="${classroom.label}"></p>
-						<a href="#" th:href="@{'/classroom-registration/classroom-info/' + ${classroom.id}}"
+						<a href="#" th:href="@{'/classroom-copy/classroom-info/' + ${classroom.id}}"
 							class="btn btn-primary">go to the classroom</a>
 					</div>
 				</div>
 			</div>
 		</div>
-
-
 
 	</div>
 </body>

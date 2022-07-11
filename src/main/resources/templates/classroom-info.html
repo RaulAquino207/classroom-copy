@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Classroom Copy</title>
@@ -19,7 +20,7 @@
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" th:href="@{/classroom-registration/all-classrooms}">Classroom Copy</a>
+				<a class="navbar-brand" href="#" th:href="@{/classroom-copy/all-classrooms}">Classroom Copy</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul style="float: right;" class="nav navbar-nav">
@@ -42,11 +43,61 @@
 			</div>
 			<div>
 				<h5> class code :</h5>
-				<h5 th:text="${classroom.id}" ></h5>
+				<h5 th:text="${classroom.id}"></h5>
 			</div>
 		</div>
+		<h4 style="display: flex !important; align-items: center;
+		flex-direction: column;">write on the notice board</h4>
+		<form style="display: flex !important; align-items: center;
+		flex-direction: column;" th:action="@{'/classroom-copy/create-notice-board/' + ${classroom.id}}"
+			th:object="${createNoticeBoardDTO}" method="post">
+			<div class="input-group input-group-sm mb-3">
+				<input style="width: 640px;
+						height: 50px;" type="text" id="content" name="content" class="form-control" aria-label="Large"
+					aria-describedby="inputGroup-sizing-sm">
+			</div>
+			<br>
+			<button style="margin-left: 5px;" class="btn btn-success" type="submit">enter</button>
+		</form>
 
-		
+		<div class="notice-board">
+
+			<h3>notice board</h3>
+		</div>
+
+		<div data-th-each="notice : ${notices}">
+			<div class="card">
+				<div class="card-header" style="border: groove;
+					border-bottom: none; border-top-right-radius: 5px;
+					border-top-left-radius: 5px; padding: 5px;">
+					<h5 data-th-text="${notice.author}"></h5>
+				</div>
+				<div class="card-body"
+					style="border: groove; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; padding: 5px;">
+					<p class="card-text" data-th-text="${notice.content}"></p>
+					<!-- <form style="display: flex !important;" th:action="@{'/classroom-copy/create-comment-in-notice-board/' + ${notice.id}} + '/' + ${classroom.id}}"
+						th:object="${createCommetInNoticeBoardDTO}" method="post">
+						<div class="input-group input-group-sm mb-3">
+							<input type="text" id="comment" name="comment" class="form-control" aria-label="Small"
+								aria-describedby="inputGroup-sizing-sm" style="height: 35px;">
+						</div>
+						<button style="margin-left: 5px;" class="btn btn-success" type="submit">comment</button>
+					</form> -->
+					<form th:action="@{'/classroom-copy/create-comment-in-notice-board/' + ${notice.id} + '/' + ${classroom.id}}"
+						th:object="${createCommetInNoticeBoardDTO}" method="post">
+						<div class="input-group input-group-sm mb-3">
+							<input style="width: 640px;
+									height: 50px;" type="text" id="comment" name="comment" class="form-control" aria-label="Large"
+								aria-describedby="inputGroup-sizing-sm">
+						</div>
+						<br>
+						<button style="margin-left: 5px;" class="btn btn-success" type="submit">comment</button>
+					</form>
+				</div>
+			</div>
+			<br>
+		</div>
+
 	</div>
 
 </body>

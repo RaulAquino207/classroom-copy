@@ -16,16 +16,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.raul.classroomcopy.dto.ClassroomDTO;
 import br.com.raul.classroomcopy.dto.ClassroomRegistrationDTO;
+import br.com.raul.classroomcopy.dto.CreateCommetInNoticeBoardDTO;
+import br.com.raul.classroomcopy.dto.CreateNoticeBoardDTO;
 import br.com.raul.classroomcopy.dto.JoinClassDTO;
+import br.com.raul.classroomcopy.dto.NoticeBoardDTO;
 import br.com.raul.classroomcopy.service.ClassroomService;
 
 @Controller
-@RequestMapping("/classroom-registration")
-public class ClassroomRegistrationController {
+@RequestMapping("/classroom-copy")
+public class ClassroomController {
 
     private ClassroomService classroomService;
 
-    public ClassroomRegistrationController(ClassroomService classroomService) {
+    public ClassroomController(ClassroomService classroomService) {
         super();
         this.classroomService = classroomService;
     }
@@ -37,7 +40,7 @@ public class ClassroomRegistrationController {
 
     @GetMapping
     public String showRegistrationForm() {
-        return "classroom-registration";
+        return "classroom-copy";
     }
 
     @GetMapping("/classroom")
@@ -57,7 +60,7 @@ public class ClassroomRegistrationController {
         }
         classroomService.register(registrationDto, username);
 
-        return "redirect:/classroom-registration/all-classrooms";
+        return "redirect:/classroom-copy/all-classrooms";
     }
 
     @GetMapping("/all-classrooms")
@@ -72,15 +75,33 @@ public class ClassroomRegistrationController {
     public ModelAndView classroomInfo(
             @PathVariable(required = false, name = "id") String id) {
         ClassroomDTO classroomDTO = classroomService.findById(Long.parseLong(id));
+        List<NoticeBoardDTO> noticeBoardDTOs = classroomService.findNoticeBoardByClassroomId(Long.parseLong(id));
         ModelAndView mv = new ModelAndView("classroom-info.html");
         mv.addObject("classroom", classroomDTO);
+        mv.addObject("notices", noticeBoardDTOs);
         return mv;
     }
 
-    @PostMapping("/joinClass")
-    public String joinClass(@ModelAttribute("joinClassDTO") JoinClassDTO JoinClassDTO) {
-        // System.out.println("Classroom ID : " + JoinClassDTO.getId());
-        String status = classroomService.joinClass(JoinClassDTO.getId());
-        return "redirect:/classroom-registration/all-classrooms?" + status;
+    @PostMapping("/join-class")
+    public String joinClass(@ModelAttribute("joinClassDTO") JoinClassDTO joinClassDTO) {
+        String status = classroomService.joinClass(joinClassDTO.getId());
+        return "redirect:/classroom-copy/all-classrooms?" + status;
+    }
+
+    @PostMapping("/create-notice-board/{id}")
+    public String createNoticeBoard(@PathVariable(required = false, name = "id") String id,
+            @ModelAttribute("createNoticeBoardDTO") CreateNoticeBoardDTO createNoticeBoardDTO) {
+        classroomService.createNoticeBoard(createNoticeBoardDTO.getContent(), Long.parseLong(id));
+        return "redirect:/classroom-copy/classroom-info/" + id;
+    }
+
+    @PostMapping("/create-comment-in-notice-board/{noticeBoardId}/{classroomId}")
+    public String createCommentInNoticeBoard(
+            @PathVariable(required = false, name = "noticeBoardId") String noticeBoardId,
+            @PathVariable(required = false, name = "classroomId") String classroomId,
+            @ModelAttribute("createCommetInNoticeBoardDTO") CreateCommetInNoticeBoardDTO createCommetInNoticeBoardDTO) {
+        classroomService.createCommentInNoticeBoard(createCommetInNoticeBoardDTO.getComment(),
+                Long.parseLong(noticeBoardId), Long.parseLong(classroomId));
+        return "redirect:/classroom-copy/classroom-info/" + classroomId;
     }
 }

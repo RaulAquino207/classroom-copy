@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 
 import br.com.raul.classroomcopy.dto.ClassroomDTO;
 import br.com.raul.classroomcopy.dto.ClassroomRegistrationDTO;
+import br.com.raul.classroomcopy.dto.NoticeBoardDTO;
 import br.com.raul.classroomcopy.model.Classroom;
+import br.com.raul.classroomcopy.model.NoticeBoard;
 import br.com.raul.classroomcopy.model.User;
 import br.com.raul.classroomcopy.model.UserToClassroom;
 import br.com.raul.classroomcopy.repository.ClassroomRepository;
+import br.com.raul.classroomcopy.repository.NoticeBoardRepository;
 import br.com.raul.classroomcopy.repository.UserRepository;
 import br.com.raul.classroomcopy.repository.UserToClassroomRepository;
 import br.com.raul.classroomcopy.service.ClassroomService;
@@ -24,14 +27,17 @@ public class ClassroomServiceImpls implements ClassroomService {
     private ClassroomRepository classroomRepository;
     private UserRepository userRepository;
     private UserToClassroomRepository userToClassroomRepository;
+    private NoticeBoardRepository noticeBoardRepository;
     private ModelMapper mapper;
 
     public ClassroomServiceImpls(ClassroomRepository classroomRepository, UserRepository userRepository,
-            UserToClassroomRepository userToClassroomRepository, ModelMapper mapper) {
+            UserToClassroomRepository userToClassroomRepository, NoticeBoardRepository noticeBoardRepository,
+            ModelMapper mapper) {
         super();
         this.classroomRepository = classroomRepository;
         this.userRepository = userRepository;
         this.userToClassroomRepository = userToClassroomRepository;
+        this.noticeBoardRepository = noticeBoardRepository;
         this.mapper = mapper;
     }
 
@@ -107,6 +113,39 @@ public class ClassroomServiceImpls implements ClassroomService {
             return "error";
         }
 
+    }
+
+    @Override
+    public void createNoticeBoard(String content, Long classroomId) {
+
+        User user = UserInformationUtils.getAuthenticatedUserInfo(userRepository);
+        Optional<Classroom> dbClassroom = classroomRepository.findById(classroomId);
+
+        NoticeBoard noticeBoard = new NoticeBoard();
+        noticeBoard.setContent(content);
+        noticeBoard.setClassroom(dbClassroom.get());
+        noticeBoard.setUser(user);
+        noticeBoard.setAuthor(user.getName());
+
+        noticeBoardRepository.save(noticeBoard);
+    }
+
+    @Override
+    public List<NoticeBoardDTO> findNoticeBoardByClassroomId(Long id) {
+
+        List<NoticeBoard> noticeBoards = noticeBoardRepository.findNoticeBoardByClassroomId(id);
+
+        List<NoticeBoardDTO> noticeBoardDTOs = new ArrayList<>();
+        noticeBoards.forEach(
+                noticeBoard -> noticeBoardDTOs.add(mapper.map(noticeBoard, NoticeBoardDTO.class)));
+
+        return noticeBoardDTOs;
+    }
+
+    @Override
+    public void createCommentInNoticeBoard(String comment, Long noticeBoardId, Long classroomId) {
+
+        System.out.println(comment + " " + noticeBoardId + " " + classroomId);
     }
 
 }
