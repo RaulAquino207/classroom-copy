@@ -8,12 +8,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tb_comment_notice_board")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class CommentNoticeBoard {
 
     @Id

@@ -74,15 +74,13 @@
 				</div>
 				<div class="card-body"
 					style="border: groove; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; padding: 5px;">
+					<br>
 					<p class="card-text" data-th-text="${notice.content}"></p>
-					<!-- <form style="display: flex !important;" th:action="@{'/classroom-copy/create-comment-in-notice-board/' + ${notice.id}} + '/' + ${classroom.id}}"
-						th:object="${createCommetInNoticeBoardDTO}" method="post">
-						<div class="input-group input-group-sm mb-3">
-							<input type="text" id="comment" name="comment" class="form-control" aria-label="Small"
-								aria-describedby="inputGroup-sizing-sm" style="height: 35px;">
-						</div>
-						<button style="margin-left: 5px;" class="btn btn-success" type="submit">comment</button>
-					</form> -->
+					<hr>
+					<div data-th-each="comment : ${notice.comments}">
+						<h4 data-th-text="${comment.author}"></h4><h5 data-th-text="${comment.comment}"></h5>
+						<hr>
+					</div>
 					<form th:action="@{'/classroom-copy/create-comment-in-notice-board/' + ${notice.id} + '/' + ${classroom.id}}"
 						th:object="${createCommetInNoticeBoardDTO}" method="post">
 						<div class="input-group input-group-sm mb-3">

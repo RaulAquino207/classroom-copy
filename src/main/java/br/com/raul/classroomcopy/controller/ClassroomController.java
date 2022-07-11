@@ -40,7 +40,7 @@ public class ClassroomController {
 
     @GetMapping
     public String showRegistrationForm() {
-        return "classroom-copy";
+        return "classroom-registration";
     }
 
     @GetMapping("/classroom")
@@ -101,7 +101,7 @@ public class ClassroomController {
             @PathVariable(required = false, name = "classroomId") String classroomId,
             @ModelAttribute("createCommetInNoticeBoardDTO") CreateCommetInNoticeBoardDTO createCommetInNoticeBoardDTO) {
         classroomService.createCommentInNoticeBoard(createCommetInNoticeBoardDTO.getComment(),
-                Long.parseLong(noticeBoardId), Long.parseLong(classroomId));
+                Long.parseLong(noticeBoardId));
         return "redirect:/classroom-copy/classroom-info/" + classroomId;
     }
 }

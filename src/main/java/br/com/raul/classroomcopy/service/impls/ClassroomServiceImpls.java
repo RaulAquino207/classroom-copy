@@ -11,10 +11,12 @@ import br.com.raul.classroomcopy.dto.ClassroomDTO;
 import br.com.raul.classroomcopy.dto.ClassroomRegistrationDTO;
 import br.com.raul.classroomcopy.dto.NoticeBoardDTO;
 import br.com.raul.classroomcopy.model.Classroom;
+import br.com.raul.classroomcopy.model.CommentNoticeBoard;
 import br.com.raul.classroomcopy.model.NoticeBoard;
 import br.com.raul.classroomcopy.model.User;
 import br.com.raul.classroomcopy.model.UserToClassroom;
 import br.com.raul.classroomcopy.repository.ClassroomRepository;
+import br.com.raul.classroomcopy.repository.CommentNoticeBoardRepository;
 import br.com.raul.classroomcopy.repository.NoticeBoardRepository;
 import br.com.raul.classroomcopy.repository.UserRepository;
 import br.com.raul.classroomcopy.repository.UserToClassroomRepository;
@@ -28,16 +30,19 @@ public class ClassroomServiceImpls implements ClassroomService {
     private UserRepository userRepository;
     private UserToClassroomRepository userToClassroomRepository;
     private NoticeBoardRepository noticeBoardRepository;
+    private CommentNoticeBoardRepository commentNoticeBoardRepository;
     private ModelMapper mapper;
 
     public ClassroomServiceImpls(ClassroomRepository classroomRepository, UserRepository userRepository,
             UserToClassroomRepository userToClassroomRepository, NoticeBoardRepository noticeBoardRepository,
+            CommentNoticeBoardRepository commentNoticeBoardRepository,
             ModelMapper mapper) {
         super();
         this.classroomRepository = classroomRepository;
         this.userRepository = userRepository;
         this.userToClassroomRepository = userToClassroomRepository;
         this.noticeBoardRepository = noticeBoardRepository;
+        this.commentNoticeBoardRepository = commentNoticeBoardRepository;
         this.mapper = mapper;
     }
 
@@ -139,13 +144,29 @@ public class ClassroomServiceImpls implements ClassroomService {
         noticeBoards.forEach(
                 noticeBoard -> noticeBoardDTOs.add(mapper.map(noticeBoard, NoticeBoardDTO.class)));
 
+        noticeBoardDTOs.forEach(noticeBoard -> {
+            List<CommentNoticeBoard> comments = commentNoticeBoardRepository
+                    .findAllByNoticeBoardId(noticeBoard.getId());
+
+            noticeBoard.setComments(comments);
+        });
+
         return noticeBoardDTOs;
     }
 
     @Override
-    public void createCommentInNoticeBoard(String comment, Long noticeBoardId, Long classroomId) {
+    public void createCommentInNoticeBoard(String comment, Long noticeBoardId) {
 
-        System.out.println(comment + " " + noticeBoardId + " " + classroomId);
+        User user = UserInformationUtils.getAuthenticatedUserInfo(userRepository);
+        Optional<NoticeBoard> dbNoticeBoard = noticeBoardRepository.findById(noticeBoardId);
+
+        CommentNoticeBoard commentNoticeBoard = new CommentNoticeBoard();
+        commentNoticeBoard.setComment(comment);
+        commentNoticeBoard.setUser(user);
+        commentNoticeBoard.setNoticeBoard(dbNoticeBoard.get());
+        commentNoticeBoard.setAuthor(user.getName());
+
+        commentNoticeBoardRepository.save(commentNoticeBoard);
     }
 
 }

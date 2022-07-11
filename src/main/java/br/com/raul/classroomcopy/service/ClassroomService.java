@@ -6,6 +6,7 @@ import br.com.raul.classroomcopy.dto.ClassroomDTO;
 import br.com.raul.classroomcopy.dto.ClassroomRegistrationDTO;
 import br.com.raul.classroomcopy.dto.NoticeBoardDTO;
 import br.com.raul.classroomcopy.model.Classroom;
+import br.com.raul.classroomcopy.model.CommentNoticeBoard;
 import br.com.raul.classroomcopy.model.NoticeBoard;
 
 public interface ClassroomService {
@@ -24,5 +25,5 @@ public interface ClassroomService {
 
     List<NoticeBoardDTO> findNoticeBoardByClassroomId(Long id);
 
-    void createCommentInNoticeBoard(String comment, Long noticeBoardId, Long classroomId);
+    void createCommentInNoticeBoard(String comment, Long noticeBoardId);
 }
